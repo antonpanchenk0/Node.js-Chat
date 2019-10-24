@@ -9,3 +9,33 @@
     box-sizing: border-box;
 }
 
+@media screen and (max-width: 1199px){
+    header .login_window, header .registration_window{
+        width: 40%;
+    }
+}
+@media screen and (max-width: 992px){
+    header .login_window, header .registration_window{
+        width: 50%;
+    }
+}
+@media screen and (max-width: 768px){
+    header .login_window, header .registration_window{
+        width: 60%;
+    }
+}
+@media screen and (max-width: 576px){
+    header .login_window, header .registration_window{
+        width: 70%;
+    }
+}
+@media screen and (max-width: 489px){
+    header .login_window, header .registration_window{
+        width: 85%;
+    }
+}
+@media screen and (max-width: 320px){
+    header .login_window, header .registration_window{
+        width: 95%;
+    }
+}

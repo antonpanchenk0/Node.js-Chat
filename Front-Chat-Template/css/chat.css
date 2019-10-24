@@ -1,0 +1,39 @@
+header
+{
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    background-image: url("../img/bg.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+header .chat_window
+{
+    overflow: hidden;
+    position: relative;
+    padding: 25px;
+    width: 90%;
+    box-sizing: border-box;
+    box-shadow: -2px 0px 10px 2px #00000061;
+}
+header .chat_window::before
+{
+    content: '';
+    background-image: url("../img/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    width: 110%;
+    height: 110%;
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    z-index: 10;
+    -webkit-filter: blur(10px);
+    filter: blur(10px);
+}
