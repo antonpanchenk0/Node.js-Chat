@@ -20,6 +20,9 @@ header .chat_window
     width: 90%;
     box-sizing: border-box;
     box-shadow: -2px 0px 10px 2px #00000061;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 header .chat_window::before
 {
