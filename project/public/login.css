@@ -1,0 +1,120 @@
+header
+{
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    background-image: url("./img/bg.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+header .login_window
+{
+    overflow: hidden;
+    position: relative;
+    padding: 25px;
+    width: 30%;
+    box-sizing: border-box;
+    box-shadow: -2px 0px 10px 2px #00000061;
+}
+header .login_window::before
+{
+    content: '';
+    background-image: url("./img/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    width: 110%;
+    height: 110%;
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    z-index: 10;
+    -webkit-filter: blur(10px);
+    filter: blur(10px);
+}
+header .login_window h2
+{
+    z-index: 20;
+    position: relative;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    font-size: 42px;
+    letter-spacing: 0.1ch;
+
+}
+header .login_window form
+{
+    z-index: 20;
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+header .login_window form input[name=user_login], header .login_window form input[name=user_password]
+{
+    width: 100%;
+    height: 35px;
+    font-size: 28px;
+    border: none;
+    border-bottom: 2px solid #ffffff;
+    background: transparent;
+    margin-bottom: 15px;
+    color: #ffffff;
+    font-weight: lighter;
+    padding: 0 5px;
+}
+header .login_window form input::placeholder
+{
+    color: #1e1e1e;
+}
+header .login_window form button{
+    padding: 10px 10px 7px 10px;
+    background: #648385;
+    font-size: 21px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    border: none;
+    width: 50%;
+    margin-top: 15px;
+    color: #ffffff;
+    transition: 0.5s;
+    border: 2px solid transparent;
+    border-radius: 5px;
+}
+header .login_window form button:focus
+{
+    border: 2px solid #ffffff;
+}
+header .login_window form button:hover
+{
+    border: 2px solid #ffffff;
+    cursor: pointer;
+}
+header .login_window .login_footer
+{
+    position: relative;
+    z-index: 20;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header .login_window .login_footer a{
+    font-size: 16px;
+    color: #ffffff;
+    transition: 0.5s;
+}
+header .login_window .login_footer a:hover{
+    text-decoration: underline;
+}

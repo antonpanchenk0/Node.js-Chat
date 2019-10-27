@@ -1,0 +1,20 @@
+{
+  "name": "nodejs_project",
+  "version": "1.0.0",
+  "description": "diploma project",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "apanchenko",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "jquery": "^3.4.1",
+    "jsdom": "^15.2.0",
+    "nodemon": "^1.19.4",
+    "socket.io": "^2.3.0"
+  }
+}
