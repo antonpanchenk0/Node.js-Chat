@@ -18,6 +18,33 @@
     header .login_window, header .registration_window{
         width: 50%;
     }
+    header .chat_window .settings .profile_settings{
+        flex-flow: column;
+        padding-bottom: 20px;
+    }
+    header .chat_window .settings .profile_settings .text_settings{
+        margin-left: 0;
+        overflow-y: scroll;
+    }
+    header .chat_window .settings .profile_settings .save_settings_btn{
+        left: 10px;
+        top: 10px;
+        right: auto;
+        bottom: auto;
+    }
+    header .chat_window .settings .profile_settings .avatar_settings{
+        margin-bottom: 25px;
+        width: 100px;
+        height: 100px;
+        max-height: 100px;
+        max-width: 100px;
+        min-height: 100px;
+        min-width: 100px;
+    }
+    header .chat_window .settings .profile_settings .avatar_settings label[for=avatar_load_btn]{
+        right: 12px;
+        top: 0;
+    }
 }
 @media screen and (max-width: 768px){
     header .login_window, header .registration_window{

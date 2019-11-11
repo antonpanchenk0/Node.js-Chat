@@ -66,7 +66,7 @@ header .login_window form input[name=user_login], header .login_window form inpu
     height: 35px;
     font-size: 28px;
     border: none;
-    border-bottom: 2px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
     background: transparent;
     margin-bottom: 15px;
     color: #ffffff;
@@ -75,7 +75,7 @@ header .login_window form input[name=user_login], header .login_window form inpu
 }
 header .login_window form input::placeholder
 {
-    color: #1e1e1e;
+    color: gray;
 }
 header .login_window form button{
     padding: 10px 10px 7px 10px;

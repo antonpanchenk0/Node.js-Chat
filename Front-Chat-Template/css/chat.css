@@ -47,8 +47,8 @@ header .chat_window .chat_header{
     position: relative;
     width: 100%;
     max-width: 100%;
-    height: 60px;
-    max-height: 60px;
+    height: 50px;
+    max-height: 50px;
     border-bottom: 1px solid #ffffff;
     padding: 10px;
     display: flex;
@@ -400,10 +400,137 @@ header .chat_window .chat_body .select_chat_window .write_message_box .send_mess
     margin-top: 10px;
 }
 header .chat_window .chat_body .select_chat_window .write_message_box .send_message_box a.send_message_btn:hover{
-    background: #ffffff;
-    color: #ffbc00;
+    background: #d3a100;
 }
-
+header .chat_window .settings{
+    position: absolute;
+    z-index: 20;
+    width: 100%;
+    height: 100%;
+    background: #2b2b2bd9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+header .chat_window .settings .profile_settings{
+    width: auto;
+    height: auto;
+    background: #2b2b2b;
+    padding: 50px;
+    border: 2px solid #1e1e1e;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+    max-height: 100%;
+}
+header .chat_window .settings .profile_settings .avatar_settings{
+    width: 150px;
+    height: 150px;
+    max-width: 150px;
+    max-height: 150px;
+    min-width: 150px;
+    min-height: 150px;
+    overflow: hidden;
+    border-radius: 50%;
+    position: relative;
+}
+header .chat_window .settings .profile_settings .avatar_settings img{
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+header .chat_window .settings .profile_setting .avatar_settings input[type=file]{
+    display: none;
+}
+header .chat_window .settings .profile_settings .avatar_settings label[for=avatar_load_btn] {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    right: 20px;
+    top: 5px;
+    background: gray;
+    border-radius: 50%;
+}
+header .chat_window .settings .profile_settings .avatar_settings label[for=avatar_load_btn]:hover{
+    cursor: pointer;
+}
+header .chat_window .settings .profile_settings .avatar_settings label[for=avatar_load_btn] img{
+    height: 24px;
+    position: absolute;
+    left: 53%;
+    top: 47%;
+    transform: translate(-50%, -50%);
+}
+header .chat_window .settings .profile_settings .text_settings{
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-left: 50px;
+}
+header .chat_window .settings .profile_settings .text_settings .input_settings_title{
+    font-size: 16px;
+    color: gray;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+header .chat_window .settings .profile_settings .text_settings .input_settings_title span{
+    color: #8a2a2a;
+}
+header .chat_window .settings .profile_settings .text_settings input[type=text], header .chat_window .settings .profile_settings .text_settings input[type=email], header .chat_window .settings .profile_settings .text_settings input[type=password]{
+    height: 35px;
+    width: 250px;
+    font-size: 24px;
+    background: #252525;
+    border: 1px solid #1e1e1e;
+    border-radius: 5px;
+    padding: 5px;
+    color: #ffffff;
+    font-weight: bold;
+    margin: 0px 0 15px 0;
+}
+header .chat_window .settings .profile_settings .close_settings_btn{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #ffffff;
+    padding: 5px;
+    border: 2px solid gray;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    transition: 0.5s;
+}
+header .chat_window .settings .profile_settings .close_settings_btn img{
+    height: 100%;
+}
+header .chat_window .settings .profile_settings .close_settings_btn:hover{
+    background: #b3b3b3;
+}
+header .chat_window .settings .profile_settings .save_settings_btn{
+    font-size: 18px;
+    font-weight: lighter;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: #ffbc00;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    transition: 0.5s;
+}
+header .chat_window .settings .profile_settings .save_settings_btn:hover{
+    background: #d3a100;
+}
 ::-webkit-scrollbar-track {
     background-color:#32312e;
 }
