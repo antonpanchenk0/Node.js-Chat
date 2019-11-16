@@ -1,0 +1,131 @@
+header
+{
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    background-image: url("../img/bg.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+header .registration_window
+{
+    overflow: hidden;
+    position: relative;
+    padding: 25px;
+    width: 30%;
+    box-sizing: border-box;
+    box-shadow: -2px 0px 10px 2px #00000061;
+}
+header .registration_window::before
+{
+    content: '';
+    background-image: url("../img/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    width: 110%;
+    height: 110%;
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    z-index: 10;
+    -webkit-filter: blur(10px);
+    filter: blur(10px);
+}
+header .registration_window h2
+{
+    z-index: 20;
+    position: relative;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    font-size: 42px;
+    letter-spacing: 0.1ch;
+
+}
+header .registration_window form
+{
+    z-index: 20;
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+header .registration_window form input[name=user_name], header .registration_window form input[name=user_login], header .registration_window form input[name=user_email],
+header .registration_window form input[name=user_password], header .registration_window form input[name=user_password_confirm], header .registration_window form input[name=btn_create_account]
+{
+    width: 100%;
+    height: 35px;
+    font-size: 28px;
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    background: transparent;
+    margin-bottom: 15px;
+    color: #ffffff;
+    font-weight: lighter;
+    padding: 0 5px;
+}
+header .registration_window form input::placeholder
+{
+    color: gray;
+}
+header .registration_window form button{
+    padding: 10px 10px 7px 10px;
+    background: #648385;
+    font-size: 21px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    border: none;
+    width: 50%;
+    margin-top: 15px;
+    color: #ffffff;
+    transition: 0.5s;
+    border: 2px solid transparent;
+    border-radius: 5px;
+}
+header .registration_window form button:focus
+{
+    border: 2px solid #ffffff;
+}
+header .registration_window form button:hover
+{
+    border: 2px solid #ffffff;
+    cursor: pointer;
+}
+header .registration_window .registration_footer
+{
+    position: relative;
+    z-index: 20;
+    margin-top: 40px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+header .registration_window .registration_footer a{
+    font-size: 16px;
+    color: #ffffff;
+    transition: 0.5s;
+}
+header .registration_window .registration_footer a:hover{
+    text-decoration: underline;
+}
+header .registration_window .registration_footer p{
+    font-size: 14px;
+    color: #648385;
+    text-align: justify;
+    margin-top: 30px;
+}
+header .registration_window .registration_footer p a{
+    font-size: 14px;
+}

@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,700&display=swap&subset=cyrillic,latin-ext,vietnamese');
+*, head, body
+{
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    outline: none;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 1199px){
+    header .login_window, header .registration_window{
+        width: 40%;
+    }
+}
+@media screen and (max-width: 992px){
+    header .login_window, header .registration_window{
+        width: 50%;
+    }
+    header .chat_window .settings .profile_settings{
+        flex-flow: column;
+        padding-bottom: 20px;
+    }
+    header .chat_window .settings .profile_settings .text_settings{
+        margin-left: 0;
+        overflow-y: scroll;
+    }
+    header .chat_window .settings .profile_settings .save_settings_btn{
+        left: 10px;
+        top: 10px;
+        right: auto;
+        bottom: auto;
+    }
+    header .chat_window .settings .profile_settings .avatar_settings{
+        margin-bottom: 25px;
+        width: 100px;
+        height: 100px;
+        max-height: 100px;
+        max-width: 100px;
+        min-height: 100px;
+        min-width: 100px;
+    }
+    header .chat_window .settings .profile_settings .avatar_settings label[for=avatar_load_btn]{
+        right: 12px;
+        top: 0;
+    }
+    header .chat_window .chat_body .chat_list{
+        background: #1d1d1d;
+        position: absolute;
+        left: -234px;
+        width: 234px;
+        max-width: 234px;
+        min-width: 234px;
+    }
+    header .chat_window .chat_body .chat_list .chat_list_boxes{
+        background: #1d1d1d;
+    }
+    header .chat_window .chat_body .select_chat_window{
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+    header .chat_window .chat_body .chat_list .switch_block_btn{
+        display: block;
+    }
+}
+@media screen and (max-width: 768px){
+    header .login_window, header .registration_window{
+        width: 60%;
+    }
+    header .chat_window .chat_body .select_chat_window{
+        padding: 30px 20px 0px 20px;
+    }
+    header .chat_window .chat_body .select_chat_window .write_message_box{
+        height: 130px;
+        min-height: 130px;
+        max-height: 130px;
+        justify-content: flex-start;
+    }
+
+}
+@media screen and (max-width: 576px){
+    header .login_window, header .registration_window{
+        width: 70%;
+    }
+    header .chat_window .chat_header .search_box input{
+        display: none;
+    }
+    header .chat_window .chat_body .select_chat_window .chat_message_box .sent_message p{
+        max-width: 90%;
+    }
+}
+@media screen and (max-width: 489px){
+    header .login_window, header .registration_window{
+        width: 85%;
+    }
+}
+@media screen and (max-width: 320px){
+    header .login_window, header .registration_window{
+        width: 95%;
+    }
+}
