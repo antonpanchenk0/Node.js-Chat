@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/chat.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <title>Чат</title>
+</head>
+<body>
+<header>
+    <div class="chat_window">
+        <div class="chat_header">
+            <div class="search_box">
+                <img src="./img/searchIcon.png" alt="SearchIcon">
+                <input type="text" name="search" id="search" placeholder="Search...">
+            </div>
+            <div class="user_profile_box">
+                <div class="user_avatar">
+                    <img src="./img/testIconImg.jpg" alt="{UserAvatar}">
+                </div>
+                <div class="user_login">
+                    <h2>{UserLogin}</h2>
+                    <p>{UserID}</p>
+                </div>
+                <div class="profile_controls">
+                    <a href="#" id="user_settings"><img src="./img/settingsIcon.png" alt="Settings"></a>
+                    <a href="#" id="user_logout"><img src="./img/logoutIcon.png" alt="Logout"></a>
+                </div>
+            </div>
+        </div>
+        <div class="chat_body">
+            <div class="chat_list">
+                <div class="chat_list_boxes">
+                    <div class="chat_box" data-id="0">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                    <div class="chat_box active" data-id="1">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                    <div class="chat_box" data-id="2">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                    <div class="chat_box" data-id="3">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                    <div class="chat_box" data-id="4">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                    <div class="chat_box" data-id="5">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                    <div class="chat_box" data-id="6">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                    <div class="chat_box" data-id="7">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                    <div class="chat_box" data-id="8">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                    <div class="chat_box" data-id="9">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                    <div class="chat_box" data-id="10">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                    <div class="chat_box" data-id="11">
+                        <div class="chat_icon">
+                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
+                        </div>
+                        <div class="chat_name">
+                            <h2>{ChatName}</h2>
+                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="switch_block_btn"></div>
+                <div class="overflow"></div>
+            </div>
+            <div class="select_chat_window">
+                <div class="chat_message_box">
+                    <div class="messages">
+                        <div class="sent_message_for_me sent_message">
+                            <div class="avatar_sender">
+                                <a href="#"><img src="./img/testIconImg.jpg" alt="{SenderAvatar}"></a>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aperiam cumque impedit iusto magnam molestiae officia quisquam sint vero! Ducimus quae sapiente temporibus? Amet illo molestiae perspiciatis. Accusantium aliquid, aperiam culpa cumque deserunt, dignissimos, doloremque earum esse eum excepturi explicabo id ipsum iste iure iusto libero magnam maiores maxime nihil nisi nostrum omnis perferendis quae quis quos ratione reiciendis similique sint sit tempora ullam unde velit voluptates. Ab aliquid at beatae debitis delectus ea, eius illum incidunt, molestias necessitatibus, omnis placeat rerum tempora temporibus tenetur vero vitae? At doloribus hic illo incidunt libero necessitatibus provident recusandae reiciendis voluptate voluptatibus, voluptatum.</p>
+                        </div>
+                        <div class="sent_message_from_me sent_message">
+                            <div class="avatar_sender">
+                                <a href="#"><img src="./img/testIconImg.jpg" alt="{SenderAvatar}"></a>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aperiam cumque impedit iusto magnam molestiae officia quisquam sint vero! Ducimus quae sapiente temporibus? Amet illo molestiae perspiciatis. Accusantium aliquid, aperiam culpa cumque deserunt, dignissimos, doloremque earum esse eum excepturi explicabo id ipsum iste iure iusto libero magnam maiores maxime nihil nisi nostrum omnis perferendis quae quis quos ratione reiciendis similique sint sit tempora ullam unde velit voluptates. Ab aliquid at beatae debitis delectus ea, eius illum incidunt, molestias necessitatibus, omnis placeat rerum tempora temporibus tenetur vero vitae? At doloribus hic illo incidunt libero necessitatibus provident recusandae reiciendis voluptate voluptatibus, voluptatum.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="write_message_box">
+                    <textarea name="message" id="message"></textarea>
+                    <div class="send_message_box">
+                        <a href="#" class="send_message_btn">Отправить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="search_result_block" style="display: none">
+            <input type="text" class="search_input_in_block" placeholder="Search...">
+            <div class="search_result">
+                <div class="result_item">
+                    <div class="user_res_avatar">
+                        <img src="./img/testIconImg.jpg" alt="{UserAvatar}">
+                    </div>
+                    <div class="user_res_nickName">
+                        <p>{UserLogin}</p>
+                    </div>
+                </div>
+                <div class="result_item">
+                    <div class="user_res_avatar">
+                        <img src="./img/testIconImg.jpg" alt="{UserAvatar}">
+                    </div>
+                    <div class="user_res_nickName">
+                        <p>{UserLogin}</p>
+                    </div>
+                </div>
+                <div class="result_item">
+                    <div class="user_res_avatar">
+                        <img src="./img/testIconImg.jpg" alt="{UserAvatar}">
+                    </div>
+                    <div class="user_res_nickName">
+                        <p>{UserLogin}</p>
+                    </div>
+                </div>
+                <div class="result_item">
+                    <div class="user_res_avatar">
+                        <img src="./img/testIconImg.jpg" alt="{UserAvatar}">
+                    </div>
+                    <div class="user_res_nickName">
+                        <p>{UserLogin}</p>
+                    </div>
+                </div>
+                <div class="result_item">
+                    <div class="user_res_avatar">
+                        <img src="./img/testIconImg.jpg" alt="{UserAvatar}">
+                    </div>
+                    <div class="user_res_nickName">
+                        <p>{UserLogin}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<script src="./js/jquery-3.4.1.min.js"></script>
+<script src="./js/chat.js"></script>
+</body>
+</html>
