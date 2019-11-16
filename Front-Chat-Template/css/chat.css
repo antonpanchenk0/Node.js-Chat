@@ -150,6 +150,7 @@ header .chat_window .chat_header .user_profile_box .profile_controls a:hover::be
     text-align: center;
     border-radius: 10px;
     padding: 3px;
+    z-index: 100;
 }
 header .chat_window .chat_header .user_profile_box .profile_controls a:hover::after{
     content: '';
@@ -159,6 +160,7 @@ header .chat_window .chat_header .user_profile_box .profile_controls a:hover::af
     align-items: center;
     top: 31px;
     border: 8px solid transparent; border-bottom: 8px solid #1e1e1e;
+    z-index: 100;
 }
 header .chat_window .chat_header .user_profile_box .profile_controls a:last-child:hover::before{
     content: 'Logout';
@@ -189,8 +191,19 @@ header .chat_window .chat_body .chat_list{
     flex-flow: column;
     justify-content: flex-start;
     align-items: start;
+    position: relative;
+    z-index: 40;
+}
+header .chat_window .chat_body .chat_list .chat_list_boxes{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: start;
     padding: 20px 10px;
     overflow-y: scroll;
+    z-index: 40;
 }
 header .chat_window .chat_body .chat_list .chat_box{
     display: flex;
@@ -265,6 +278,34 @@ header .chat_window .chat_body .chat_list .chat_box .chat_name p span.sender{
     color: #ffbc00;
     font-weight: bold;
 }
+header .chat_window .chat_body .chat_list .switch_block_btn{
+    position: absolute;
+    top: 50%;
+    right: -50px;
+    height: 50px;
+    width: 50px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1px solid #ffffff;
+    display: none;
+    background-image: url('../img/menuIcon.png');
+    background-position: 85%;
+    background-size: 16px;
+    background-repeat: no-repeat;
+    z-index: 30;
+}
+header .chat_window .chat_body .chat_list .switch_block_btn:hover{
+    cursor: pointer;
+}
+header .chat_window .chat_body .chat_list .overflow{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 700%;
+    height: 100%;
+    background: rgba(43, 43, 43, 0.61);
+    display: none;
+}
 
 header .chat_window .chat_body .select_chat_window{
     width: 75%;
@@ -285,10 +326,20 @@ header .chat_window .chat_body .select_chat_window .chat_message_box{
     flex-flow: column;
     justify-content: flex-end;
     align-items: start;
-    overflow-y: scroll;
-    padding: 10px;
     height: 100%;
     margin-bottom: 15px;
+    overflow-y: scroll;
+    position: relative;
+}
+header .chat_window .chat_body .select_chat_window .chat_message_box .messages{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: auto;
+    width: 100%;
+    padding: 10px;
+    max-height: 100%;
+    max-width: 100%;
 }
 header .chat_window .chat_body .select_chat_window .chat_message_box .sent_message{
     width: 100%;
@@ -364,7 +415,9 @@ header .chat_window .chat_body .select_chat_window .chat_message_box .sent_messa
 }
 header .chat_window .chat_body .select_chat_window .write_message_box{
     width: 100%;
-    height: auto;
+    height: 120px;
+    min-height: 120px;
+    max-height: 120px;
     display: flex;
     flex-flow: column;
     justify-content: space-between;
@@ -530,6 +583,85 @@ header .chat_window .settings .profile_settings .save_settings_btn{
 }
 header .chat_window .settings .profile_settings .save_settings_btn:hover{
     background: #d3a100;
+}
+
+/*OverFlow Windows*/
+header .chat_window .search_result_block{
+    width: 250px;
+    height: 250px;
+    background: #1f1f1f;
+    box-shadow: -2px 0px 10px 2px #00000061;
+    position: absolute;
+    top: 50px;
+    left: 15px;
+    z-index: 20;
+    border-radius: 0 0 10px 10px;
+    padding: 10px 0;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: space-between;
+}
+header .chat_window .search_result_block .search_input_in_block{
+    width: 90%;
+    height: 30px;
+    padding: 5px;
+    margin: 0 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    font-size: 21px;
+    color: #ffffff;
+}
+header .chat_window .search_result_block .search_input_in_block::placeholder{
+    color: #ffffff;
+}
+header .chat_window .search_result_block .search_result{
+    overflow-y: scroll;
+    height: 75%;
+    margin-top: 15px;
+    width: 90%;
+}
+header .chat_window .search_result_block .search_result .result_item{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    max-height: 50px;
+    min-height: 50px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    transition: 0.5s;
+}
+header .chat_window .search_result_block .search_result .result_item:hover{
+    background: #2b2b2b;
+}
+header .chat_window .search_result_block .search_result .result_item .user_res_avatar{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    margin-right: 20px;
+}
+header .chat_window .search_result_block .search_result .result_item .user_res_avatar img{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+}
+header .chat_window .search_result_block .search_result .result_item .user_res_nickName{
+    width: 144px;
+    overflow: hidden;
+    max-height: 50px;
+    white-space: nowrap;
+}
+header .chat_window .search_result_block .search_result .result_item .user_res_nickName p{
+    font-size: 24px;
+    color: #ffffff;
+    font-weight: bold;
 }
 ::-webkit-scrollbar-track {
     background-color:#32312e;

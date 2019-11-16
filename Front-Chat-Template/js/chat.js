@@ -93,3 +93,118 @@ settingsBtn.addEventListener('click', function (e) {
         user.userSettingsClass.render();
     }
 })
+//Событие для мобильных устройств
+settingsBtn.addEventListener('touch', function (e) {
+    e.preventDefault();
+    let _this = e.target;
+    _this = _this.parentNode;
+    if(_this.matches('#user_settings') || _this.matches('img[alt=Settings]')){
+
+        user.userSettingsClass = new Settings('Anton', 'apanchenko', 'dasdsadsadsa@dsadasdas.dsadsa', './img/testIconImg.jpg');
+
+        user.userSettingsClass.render();
+    }
+})
+/***
+ * chatListBtn - кнопка откртия/закрытия списка чатов
+ * chatListStatus - статис стиска чатов(открыт/закрыт)
+ * chatListFlag - флаг списка чатов, доступно ли закрытие/открытие списка?
+ * @type {Element}
+ */
+let chatListMenu = document.querySelector('.chat_list');
+let chatListBtn = document.querySelector('.switch_block_btn');
+let chatListStatus = false;
+let chatListFlag = true;
+
+//Функция закртыия списка чатов
+changeMenu = (index) =>{
+    chatListFlag = !chatListFlag;
+    let positionNow = 0 - chatListMenu.getBoundingClientRect().width
+    let position = null
+    console.log(positionNow, position)
+    $('.chat_list .overflow').fadeOut(500);
+    let interval = setInterval(function () {
+        if(position > positionNow){
+            position+=6*index;
+            chatListMenu.style.left = position+'px';
+        }
+        if(position <= positionNow){
+            chatListFlag = !chatListFlag;
+            chatListStatus = !chatListStatus;
+            clearInterval(interval);
+        }
+    }, 15)
+}
+
+//Событие на кнопке
+chatListBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    let _this = e.target;
+    if(_this.matches('.switch_block_btn') && document.querySelector('body').getBoundingClientRect().width <= 992){
+        if(chatListStatus == false && chatListFlag == true){
+            chatListFlag = !chatListFlag;
+            let position = chatListMenu.getBoundingClientRect().left;
+            $('.chat_list .overflow').fadeIn(500);
+            let interval = setInterval(function () {
+                if(position < 0){
+                    position+=6;
+                    chatListMenu.style.left = position+'px';
+                }
+                if(position >= 0){
+                    chatListFlag = !chatListFlag;
+                    chatListStatus = !chatListStatus;
+                    clearInterval(interval);
+                }
+            }, 15)
+        }
+        if(chatListStatus == true && chatListFlag == true){
+            changeMenu(-1);
+        }
+    }
+});
+
+//Событие на Overflow блоке
+document.querySelector('.chat_list .overflow').addEventListener('click', function (e) {
+    let _this = e.target;
+    if(_this.matches('.chat_list .overflow') && document.querySelector('body').getBoundingClientRect().width <= 992) {
+        if(chatListStatus == true && chatListFlag == true){
+            changeMenu(-1);
+        }
+    }
+})
+document.addEventListener('click', function (e) {
+    let _this = e.target;
+    if((_this.matches('.chat_box') || _this.parentNode.matches('.chat_box') || _this.parentNode.parentNode.matches('.chat_box')) && document.querySelector('body').getBoundingClientRect().width <= 992){
+        changeMenu(-1);
+    }
+})
+
+/**
+ * searchOpenBtn - кнопка открытия поиска
+ * searchBoxBlock - блок поиска
+ * searchBlockStatus - статус блока поиска открыт/закрыт
+ * searchBlockFlag - разрешено ли изменять блок? (открывать/закрывать)
+ * @type {Element}
+ */
+let searchOpenBtn = document.querySelector('.search_box img');
+let searchBoxBlock = document.querySelector('.search_result_block');
+let searchBlockStatus = false;
+let searchBlockFlag = true;
+searchOpenBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    let _this = e.target;
+    if(_this.matches('.search_box img') && document.querySelector('body').getBoundingClientRect().width <= 576){
+        if(!searchBlockStatus && searchBlockFlag){
+            searchBlockFlag = !searchBlockFlag;
+            $(searchBoxBlock).fadeIn(500);
+            setTimeout(()=>{searchBlockFlag = !searchBlockFlag}, 550)
+            searchBlockStatus = !searchBlockStatus
+        }
+        if(searchBlockStatus && searchBlockFlag){
+            searchBlockFlag = !searchBlockFlag;
+            $(searchBoxBlock).fadeOut(500);
+            setTimeout(()=>{searchBlockFlag = !searchBlockFlag}, 550)
+            searchBlockStatus = !searchBlockStatus
+        }
+    }
+})
