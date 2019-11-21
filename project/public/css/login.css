@@ -118,3 +118,38 @@ header .login_window .login_footer a{
 header .login_window .login_footer a:hover{
     text-decoration: underline;
 }
+.notification{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 250px;
+    max-width: 250px;
+    height: 100px;
+    max-height: 100px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.notification a.close-notification{
+    color: #2b2b2b;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.notification a.close-notification:hover{
+    text-decoration: underline;
+}
+.notification h2.notification-title{
+    font-size: 24px;
+    color: #ffffff;
+    text-align: center;
+}
+.notification p.notification-body{
+    font-size: 16px;
+    color: #2b2b2b;
+    text-align: center;
+}
+.notification.red{
+    background: #c74d4d;
+}

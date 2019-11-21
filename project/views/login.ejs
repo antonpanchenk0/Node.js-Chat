@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" href="./css/login.css">
     <link rel="stylesheet" href="./css/common.css">
     <title>Авторизация</title>
@@ -18,10 +19,17 @@
             <button type="submit" name="btn_login" id="btn_login" value="Войти">Войти</button>
         </form>
         <div class="login_footer">
-            <a href="#">Зарегистрироваться</a>
+            <a href="/registration">Зарегистрироваться</a>
             <a href="#">Забыли пароль?</a>
         </div>
     </div>
 </header>
+<div class="notification green" style="display: none">
+    <a href="#" class="close-notification">Close</a>
+    <h2 class="notification-title"></h2>
+    <p class="notification-body"></p>
+</div>
+<script src="./js/jquery-3.4.1.min.js"></script>
+<script src="./js/auth.js"></script>
 </body>
 </html>
