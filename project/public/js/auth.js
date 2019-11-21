@@ -19,6 +19,20 @@ const userDataInputs = {
     password: document.getElementById('user_password'),
 }
 
+const loginBtn = document.getElementById('btn_login'); //Кнопка авторизации
+
+loginBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    let data = {
+        socketID: socket.id,
+        login: userDataInputs.login.value,
+        password: userDataInputs.password.value,
+    }
+    socket.emit('authorization', data);
+    socket.on('authorization_response', (data)=>{
+        console.log(data);
+    })
+})
 /**
  *Функции уведомление о ошибке введенных данных
  * @param title
