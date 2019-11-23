@@ -21,17 +21,32 @@ const userDataInputs = {
 
 const loginBtn = document.getElementById('btn_login'); //Кнопка авторизации
 
+//Собтие запроса авторизации
 loginBtn.addEventListener('click', function (e) {
     e.preventDefault();
+    let fingerprint = navigator.userAgent + navigator.language + new Date().getTimezoneOffset() + screen.height + screen.width + screen.colorDepth;
     let data = {
         socketID: socket.id,
         login: userDataInputs.login.value,
         password: userDataInputs.password.value,
+        fingerprint: fingerprint,
     }
     socket.emit('authorization', data);
-    socket.on('authorization_response', (data)=>{
-        console.log(data);
-    })
+})
+
+//Действия на ответ сервера об доступе авторизации
+socket.on('authorization_response', (data)=>{
+    if(data.authorizationStatus){
+        console.log('authorize')
+        console.log(data)
+        if(data.authorizationStatus){
+            sessionStorage.setItem('authorized_token', data.authorized_token);
+            sessionStorage.setItem('refresh_token', data.refresh_token);
+        }
+    }
+    else{
+        errorMessage('Authorize Fail', 'Ошибка авторизации. Проверьте правильность введенных данных.');
+    }
 })
 /**
  *Функции уведомление о ошибке введенных данных

@@ -61,28 +61,6 @@ send.addEventListener('click', function (e) {
     let staticLogin = userDataInputs.login.value; //Перменная для избежания подмены лоина во время ответа сервера
 
     socket.emit('check_login', {login: userDataInputs.login.value, socketID: socket.id}); //Запрос всех существубщих логинов с сервера
-    //Действия в ответ сервера. Обработка логина #2
-    socket.on('check_login_result', data=>{
-        //Если логина не существует создаем объект пользователя и отправляем на севрер
-        if(data.userStatus){
-            let data = {
-                socketID: socket.id,
-                name: userDataInputs.name.value,
-                login: userDataInputs.login.value,
-                email: userDataInputs.email.value,
-                passwd: userDataInputs.passwd.value,
-            }
-            socket.emit('new_user', data);
-            userDataInputs.name.value = '';
-            userDataInputs.login.value = '';
-            userDataInputs.email.value = '';
-            userDataInputs.passwd.value = '';
-            userDataInputs.passwdConfirm.value = '';
-        }
-        else{
-            return errorMessage('Error: Invalid Login', 'Не правильный формат логина либо он уже занят. Проверьте правильность имени еще раз.')
-        }
-    })
 })
 
 /**
@@ -106,6 +84,29 @@ successMessage = (title, message) =>{
     $('div.notification').fadeIn(500);
     setTimeout(()=>{$('div.notification').fadeOut(500);}, 3000);
 }
+
+//Действия в ответ сервера. Обработка логина #2
+socket.on('check_login_result', data=>{
+    //Если логина не существует создаем объект пользователя и отправляем на севрер
+    if(data.userStatus){
+        let data = {
+            socketID: socket.id,
+            name: userDataInputs.name.value,
+            login: userDataInputs.login.value,
+            email: userDataInputs.email.value,
+            passwd: userDataInputs.passwd.value,
+        }
+        socket.emit('new_user', data);
+        userDataInputs.name.value = '';
+        userDataInputs.login.value = '';
+        userDataInputs.email.value = '';
+        userDataInputs.passwd.value = '';
+        userDataInputs.passwdConfirm.value = '';
+    }
+    else{
+        return errorMessage('Error: Invalid Login', 'Не правильный формат логина либо он уже занят. Проверьте правильность имени еще раз.')
+    }
+})
 
 socket.on('success_user_add', (data)=>{
     successMessage('Success', `Пользователь ${data.userLogin} успешно создан`)
