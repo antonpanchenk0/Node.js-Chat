@@ -1,6 +1,23 @@
 const socket = io.connect("http://localhost:7777");
 
-console.log(socket)
+console.log(socket);
+
+setTimeout(()=>{
+    const Session = {
+        authorized_token: sessionStorage.getItem('authorized_token'),
+        refresh_token: sessionStorage.getItem('refresh_token'),
+    };
+
+    if(Session.authorized_token != null){
+        let data = {
+            fingerprint: navigator.userAgent + navigator.language + new Date().getTimezoneOffset() + screen.height + screen.width + screen.colorDepth,
+            authorized_token: Session.authorized_token,
+            refresh_token: Session.refresh_token,
+            socketID: socket.id,
+        };
+        socket.emit('authorization_with_token', data);
+    }
+}, 500)
 
 document.querySelector('a.close-notification').addEventListener('click', function (e) {
     e.preventDefault();
@@ -37,16 +54,24 @@ loginBtn.addEventListener('click', function (e) {
 //Действия на ответ сервера об доступе авторизации
 socket.on('authorization_response', (data)=>{
     if(data.authorizationStatus){
-        console.log('authorize')
-        console.log(data)
-        if(data.authorizationStatus){
-            sessionStorage.setItem('authorized_token', data.authorized_token);
-            sessionStorage.setItem('refresh_token', data.refresh_token);
-        }
+        sessionStorage.setItem('authorized_token', data.authorizeToken);
+        sessionStorage.setItem('refresh_token', data.refreshToken);
     }
     else{
         errorMessage('Authorize Fail', 'Ошибка авторизации. Проверьте правильность введенных данных.');
     }
+})
+
+//Действие на ошибку авторизации по токену
+socket.on('error_authorization_with_token', (data)=>{
+    errorMessage('Login Fail', 'Данные авторизации устарели. Введите их еще раз.');
+    sessionStorage.setItem('authorized_token', 'refuse');
+    sessionStorage.setItem('refresh_token', 'refuse');
+})
+
+//Действие на подтверждение авторизации по токену
+socket.on('success_authorization_with_token', (data)=>{
+    console.log(data)
 })
 /**
  *Функции уведомление о ошибке введенных данных
