@@ -1,20 +1,26 @@
+$(document).ready(function () {
+    $('#preloader').fadeOut(1000);
+})
 const socket = io.connect("http://localhost:7777");
 
 console.log(socket)
 
-const Session = {
-    authorized_token: sessionStorage.getItem('authorized_token'),
-    refresh_token: sessionStorage.getItem('refresh_token'),
-};
-if(Session.authorized_token != null){
-    let data = {
-        fingerprint: navigator.userAgent + navigator.language + new Date().getTimezoneOffset() + screen.height + screen.width + screen.colorDepth,
-        authorized_token: Session.authorized_token,
-        refresh_token: Session.refresh_token,
-        socketID: socket.id,
+setTimeout(()=>{
+    const Session = {
+        authorized_token: sessionStorage.getItem('authorized_token'),
+        refresh_token: sessionStorage.getItem('refresh_token'),
     };
-    socket.emit('authorization_with_token', data);
-}
+
+    if(Session.authorized_token != null){
+        let data = {
+            fingerprint: navigator.userAgent + navigator.language + new Date().getTimezoneOffset() + screen.height + screen.width + screen.colorDepth,
+            authorized_token: Session.authorized_token,
+            refresh_token: Session.refresh_token,
+            socketID: socket.id,
+        };
+        socket.emit('authorization_with_token', data);
+    }
+}, 500)
 
 /**
  * Событие закрытия уведомления

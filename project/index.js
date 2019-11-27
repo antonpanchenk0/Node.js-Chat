@@ -13,6 +13,9 @@ const dataBaseSettigns = {
     database: 'dimpola',
     password: '',
 }
+app.get('/chat', (req, res) =>{
+    res.render('chat')
+})
 app.get('/', (req, res) =>{
     res.render('registration')
 })
@@ -36,7 +39,11 @@ io.on('connection', (socket)=>{
             if(err) console.log('Server: User add error (new_user)\n', err);
             else {
                 console.log('Server: User add success\n', res);
-                io.sockets.sockets[data.socketID].emit('success_user_add', {res: res, err: err, userLogin: data.login})
+                try {
+                    io.sockets.sockets[data.socketID].emit('success_user_add', {res: res, err: err, userLogin: data.login})
+                } catch (err) {
+                    console.log('Server: Error send @success_user_add EVENT to socket with ID = ', data.socketID, '\nError: ', err)
+                }
             }
         })
         connection.end();
@@ -56,7 +63,11 @@ io.on('connection', (socket)=>{
                 else
                     userStatus = false;
                 console.log('Server: Check login success\n', res);
-                io.sockets.sockets[data.socketID].emit('check_login_result', {userStatus: userStatus});
+                try {
+                    io.sockets.sockets[data.socketID].emit('check_login_result', {userStatus: userStatus});
+                } catch (err) {
+                    console.log('Server: Error send @check_login_result EVENT to socket with ID = ', data.socketID, '\nError: ', err)
+                }
             }
         })
         connection.end();
@@ -94,7 +105,11 @@ io.on('connection', (socket)=>{
                         authorizeToken: undefined,
                     }
                 }
-                io.sockets.sockets[data.socketID].emit('authorization_response', responseObject);
+                try {
+                    io.sockets.sockets[data.socketID].emit('authorization_response', responseObject);
+                } catch (err) {
+                    console.log('Server: Error send @authorization_response EVENT to socket with ID = ', data.socketID, '\nError: ', err)
+                }
             }
         })
         connection.end();
@@ -118,12 +133,13 @@ io.on('connection', (socket)=>{
                            else{
                                console.log('Server: Success get userData after check token and fingerprint\n', res);
                                let successAuthorizationWithTokenData = { //Объект для отправки клиенту который запросил авторизацию по токену
-                                   login: res[0].login,
-                                   name: res[0].name,
-                                   email: res[0].email,
-                                   avatar: res[0].avatar,
+                                   postAuthorization: true,
                                };
-                                io.sockets.sockets[data.socketID].emit('success_authorization_with_token', successAuthorizationWithTokenData);
+                               try {
+                                   io.sockets.sockets[data.socketID].emit('success_authorization_with_token', successAuthorizationWithTokenData);
+                               } catch (err) {
+                                   console.log('Server: Error send @success_authorization_with_token EVENT to socket with ID = ', data.socketID, '\nError: ', err);
+                               }
                            }
                        })
                     }
@@ -134,18 +150,28 @@ io.on('connection', (socket)=>{
                     else{
                         console.log('Server: fingerprints false! Token are remove now!');
                         let id = res[0].id;
-                        const removeTokensSQL = `UPDATE sessions SET authorized_token = 'null', refresh_token = 'null',fingerprint = 'null' create_time = '${+new Date().getTime()}' WHERE id = '${id}`;
+                        const removeTokensSQL = `UPDATE sessions SET authorized_token = 'null', refresh_token = 'null', fingerprint = 'null', create_time = '${+new Date().getTime()}' WHERE id = '${id}`;
                         connection.query(removeTokensSQL, (err, res)=>{
                             if(err) console.log('Server: Token remove Error', err);
                             else{
                                 console.log('Server: Token remove success', res);
-                                io.sockets.sockets[data.socketID].emit('error_authorization_with_token', {authorize: false});
+                                try {
+                                    io.sockets.sockets[data.socketID].emit('error_authorization_with_token', {authorize: false});
+                                } catch (err) {
+                                    console.log('Server: Error send @error_authorization_with_token EVENT to socket with ID = ', data.socketID, '\nError: ', err)
+                                }
                             }
                         })
                     }
                 }
             }
         })
+        connection.end();
+    })
+
+    //Ответ сервер на запрос данных от клиента которому разрешен доступ в чат
+    socket.on('get_data_to_user_in_chat', (data)=>{
+
     })
 })
 
@@ -213,13 +239,15 @@ writeNewSession = (data) =>{
                 if(err) return console.log('Server: Error add Session', err);
                 else return console.log('Server: New Session add', res);
             })
+            connection.end();
         }
         if(userTokenStatus == true){
-            const sqlUpdate = `UPDATE sessions SET authorized_token = '${authorized_token}', refresh_token = '${refresh_token}',fingerprint = '${fingerprint}' create_time = '${+new Date().getTime()}' WHERE user_id = '${user_id}'`;
+            const sqlUpdate = `UPDATE sessions SET authorized_token = '${authorized_token}', refresh_token = '${refresh_token}', fingerprint = '${fingerprint}', create_time = '${+new Date().getTime()}' WHERE user_id = '${user_id}'`;
             connection.query(sqlUpdate, (err, res)=>{
                 if(err) return console.log(' Server:Error update Session', err);
                 else return console.log('Server: Session update Success', res);
             })
+            connection.end();
         }
     }, 2000)
 }

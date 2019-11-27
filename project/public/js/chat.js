@@ -1,3 +1,22 @@
+const socket = io.connect("http://localhost:7777");
+
+console.log(socket);
+
+setTimeout(()=>{
+    const Session = {
+        authorized_token: sessionStorage.getItem('authorized_token'),
+        refresh_token: sessionStorage.getItem('refresh_token'),
+        fingerprint: navigator.userAgent + navigator.language + new Date().getTimezoneOffset() + screen.height + screen.width + screen.colorDepth,
+    };
+
+    if(Session.authorized_token != null){
+        socket.emit('get_data_to_user_in_chat', Session);
+    }
+    else{
+        window.location.assign('/login');
+    }
+}, 500)
+
 /**
  * Главные объект описывающий пользователя
  * @type {{settingsWindowStatus: boolean, userSettingsClass: Class || Null}}

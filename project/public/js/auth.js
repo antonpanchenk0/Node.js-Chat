@@ -1,3 +1,6 @@
+$(document).ready(function () {
+    $('#preloader').fadeOut(1000);
+})
 const socket = io.connect("http://localhost:7777");
 
 console.log(socket);
@@ -56,6 +59,7 @@ socket.on('authorization_response', (data)=>{
     if(data.authorizationStatus){
         sessionStorage.setItem('authorized_token', data.authorizeToken);
         sessionStorage.setItem('refresh_token', data.refreshToken);
+        window.location.assign('/chat')
     }
     else{
         errorMessage('Authorize Fail', 'Ошибка авторизации. Проверьте правильность введенных данных.');
@@ -71,7 +75,7 @@ socket.on('error_authorization_with_token', (data)=>{
 
 //Действие на подтверждение авторизации по токену
 socket.on('success_authorization_with_token', (data)=>{
-    console.log(data)
+    window.location.assign('/chat')
 })
 /**
  *Функции уведомление о ошибке введенных данных
