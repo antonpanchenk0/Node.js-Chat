@@ -7,6 +7,7 @@ setTimeout(()=>{
         authorized_token: sessionStorage.getItem('authorized_token'),
         refresh_token: sessionStorage.getItem('refresh_token'),
         fingerprint: navigator.userAgent + navigator.language + new Date().getTimezoneOffset() + screen.height + screen.width + screen.colorDepth,
+        socketID: socket.id,
     };
 
     if(Session.authorized_token != null){
@@ -16,6 +17,36 @@ setTimeout(()=>{
         window.location.assign('/login');
     }
 }, 500)
+
+let userData = null;//Объект "Пользователь"
+
+//Действия на ответ от сервра и получение авторизационных данных
+socket.on('post_data_to_user_in_chat', (data)=>{
+    userData = data;
+    $('.user_login h2').text(data.name);
+    $('.user_login p').text(`#${data.id}`);
+    $('.user_avatar img').attr('src', data.avatar);
+    $('#preloader').fadeOut(1000);
+})
+
+//Действие клиента на ответ сервера на запрос поиска пользователей
+socket.on('search_by_id_response', (data)=>{
+    console.log('search_by_id_response', data);
+})
+
+socket.on('search_by_id_response_null', (data)=>{
+    console.log('search_by_id_response_null', data);
+})
+
+
+/**
+ * Функция для создания блоков в ДОМЕ в которые будет выводится результат поиска
+ * @param login - логин пользователя
+ * @param avatar - аватарка пользователя
+ */
+createSearchResult = (login, avatar) =>{
+
+}
 
 /**
  * Главные объект описывающий пользователя
@@ -27,6 +58,8 @@ let user = {
 }
 let chatWindow = document.querySelector('.chat_window');
 let settingsBtn = document.getElementById('user_settings');
+let exitBtn = document.getElementById('user_logout');
+let searchInput = document.getElementById('search');
 
 /**
  * Компонент "окно настроек пользователя"
@@ -107,7 +140,7 @@ settingsBtn.addEventListener('click', function (e) {
     _this = _this.parentNode;
     if(_this.matches('#user_settings') || _this.matches('img[alt=Settings]')){
 
-        user.userSettingsClass = new Settings('Anton', 'apanchenko', 'dasdsadsadsa@dsadasdas.dsadsa', './img/testIconImg.jpg');
+        user.userSettingsClass = new Settings(userData.name, userData.login, userData.email, userData.avatar);
 
         user.userSettingsClass.render();
     }
@@ -119,9 +152,33 @@ settingsBtn.addEventListener('touch', function (e) {
     _this = _this.parentNode;
     if(_this.matches('#user_settings') || _this.matches('img[alt=Settings]')){
 
-        user.userSettingsClass = new Settings('Anton', 'apanchenko', 'dasdsadsadsa@dsadasdas.dsadsa', './img/testIconImg.jpg');
+        user.userSettingsClass = new Settings(userData.name, userData.login, userData.email, userData.avatar);
 
         user.userSettingsClass.render();
+    }
+})
+
+//Событие выхода пользователя из аккаунта
+exitBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    let _this = e.target;
+    _this = _this.parentNode;
+    if(_this.matches('#user_logout') || _this.matches('img[alt=Logout]')){
+        sessionStorage.clear();
+        location.reload();
+    }
+})
+
+//Событие нажатия кнопки @Enter при вводе в меню поиска (поиск по ID либо логину)
+searchInput.addEventListener('keydown', function (e) {
+    if(e.keyCode == 13){
+        let enterData = searchInput.value;
+        enterData.split('');
+        if(enterData[0] == '#'){
+            socket.emit('go_search_by_userID', {searchValue: searchInput.value, socketID: socket.id});
+        } else{
+            socket.emit('go_search_by_login', {searchValue: searchInput.value, socketID: socket.id});
+        }
     }
 })
 /***

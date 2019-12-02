@@ -113,6 +113,8 @@ header .chat_window .chat_header .user_profile_box .user_login p{
     font-size: 16px;
     color: #ffffff;
     font-weight: lighter;
+    width: 100%;
+    text-align: right;
 }
 header .chat_window .chat_header .user_profile_box .profile_controls{
     display: flex;
@@ -202,7 +204,7 @@ header .chat_window .chat_body .chat_list .chat_list_boxes{
     justify-content: flex-start;
     align-items: start;
     padding: 20px 10px;
-    overflow-y: scroll;
+    overflow-y: auto;
     z-index: 40;
 }
 header .chat_window .chat_body .chat_list .chat_box{
@@ -328,7 +330,7 @@ header .chat_window .chat_body .select_chat_window .chat_message_box{
     align-items: start;
     height: 100%;
     margin-bottom: 15px;
-    overflow-y: scroll;
+    overflow-y: auto;
     position: relative;
 }
 header .chat_window .chat_body .select_chat_window .chat_message_box .messages{
@@ -636,6 +638,85 @@ header .chat_window .search_result_block .search_result .result_item{
 }
 header .chat_window .search_result_block .search_result .result_item:hover{
     background: #2b2b2b;
+}
+header .chat_window .search_result_block .search_result .result_item .user_res_avatar{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    margin-right: 20px;
+}
+header .chat_window .search_result_block .search_result .result_item .user_res_avatar img{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+}
+header .chat_window .search_result_block .search_result .result_item .user_res_nickName{
+    width: 144px;
+    overflow: hidden;
+    max-height: 50px;
+    white-space: nowrap;
+}
+header .chat_window .search_result_block .search_result .result_item .user_res_nickName p{
+    font-size: 24px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+header .chat_window .search_result_block[data-device=desktop]{
+    width: 450px;
+    height: 250px;
+    background: #1f1f1f;
+    box-shadow: -2px 0px 10px 2px #00000061;
+    position: absolute;
+    top: 50px;
+    left: 5px;
+    z-index: 20;
+    border-radius: 0 0 10px 10px;
+    padding: 10px 0;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: space-between;
+}
+header .chat_window .search_result_block .search_input_in_block{
+    width: 90%;
+    height: 30px;
+    padding: 5px;
+    margin: 0 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    font-size: 21px;
+    color: #ffffff;
+}
+header .chat_window .search_result_block .search_input_in_block::placeholder{
+    color: #ffffff;
+}
+header .chat_window .search_result_block .search_result{
+    overflow-y: scroll;
+    height: 100%;
+    margin-top: 15px;
+    width: 90%;
+}
+header .chat_window .search_result_block .search_result .result_item{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    max-height: 50px;
+    min-height: 50px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    transition: 0.5s;
+}
+header .chat_window .search_result_block .search_result .result_item:hover{
+    background: #2b2b2b;
+    cursor: pointer;
 }
 header .chat_window .search_result_block .search_result .result_item .user_res_avatar{
     height: 50px;

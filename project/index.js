@@ -166,12 +166,97 @@ io.on('connection', (socket)=>{
                 }
             }
         })
-        connection.end();
     })
 
     //Ответ сервер на запрос данных от клиента которому разрешен доступ в чат
     socket.on('get_data_to_user_in_chat', (data)=>{
+        const connection = mysql.createConnection(dataBaseSettigns);
+        const {authorized_token, refresh_token, fingerprint, socketID} = data;
+        const getSessionSQL = `SELECT * FROM sessions WHERE authorized_token = '${authorized_token}' AND fingerprint = '${hashFingerprint(fingerprint)}'`;
+        //Таймаут для того чтобы БД успела обновить данные
+        setTimeout(()=>{
+        connection.query(getSessionSQL, (err, res) =>{
+            if(err) console.log('Server: User with authorized_token = ', authorized_token, 'and fingerprint = ', fingerprint, '. \nError:', err);
+            else{
+                if(res.length == 1){
+                       let userID = res[0].user_id;
+                       const getUserData = `SELECT * FROM users WHERE id = '${userID}'`;
+                       connection.query(getUserData, (err, res)=>{
+                           if(err) console.log(`Server: Error found user (SELECT * FROM users WHERE id = '${userID}'). Error:`, err);
+                           else{
+                                if(res.length == 1){
+                                    let userData = {
+                                        id: res[0].id,
+                                        login: res[0].login,
+                                        name: res[0].name,
+                                        email: res[0].email,
+                                        avatar: res[0].avatar,
+                                    };
+                                    try{
+                                        io.sockets.sockets[socketID].emit('post_data_to_user_in_chat', userData);
+                                    }catch (err) {
+                                        console.log('Server: Error Send data to user with socketID = ', socketID);
+                                    }
+                                }
+                                else{
+                                    console.log('Server: UserData no found or More than one user was found. Error. Result = ', res);
+                                    //Если серверу не удалось найти такого пользователя отправляем ошибку клиенту
+                                    try {
+                                        io.sockets.sockets[socketID].emit('get_data_error', {error: err, result: res});
+                                    } catch (err) {
+                                        console.log('Server: Error send @get_data_error EVENT to socket with ID = ', socketID,'\nError: ', err);
+                                    }
+                                }
+                           }
+                       })
+                }
+                else{
+                    console.log('Server: UserSession no found or More than one user was found. Result = ', res);
+                    //Если серверу не удалось найти такого пользователя отправляем ошибку клиенту
+                    try {
+                        io.sockets.sockets[socketID].emit('get_session_error', {error: err, result: res});
+                    } catch (err) {
+                        console.log('Server: Error send @get_session_error EVENT to socket with ID = ', socketID,'\nError: ', err);
+                    }
+                }
+            }
+        });
+        },2000);
+    })
 
+    //Ответ сервера на запрос поиска пользователей по ID
+    socket.on('go_search_by_userID', (data)=>{
+        const {searchValue,socketID} = data;
+        let id = searchValue.split('#');
+        const sqlGetUserByID = `SELECT * FROM users WHERE id = '${id[1]}';`
+        const connection = mysql.createConnection(dataBaseSettigns);
+        connection.query(sqlGetUserByID, (err, res)=>{
+            if(err) console.log('Server: Error get user with id = ', searchValue, ' - ', id, 'in DataBase. ErrorLog: ', err);
+            else{
+                if(res.length == 1){
+                    let dataToSend = {
+                        id: res[0].id,
+                        login: res[0].login,
+                        avatar: res[0].avatar
+                    }
+                    try{
+                        io.sockets.sockets[socketID].emit('search_by_id_response', dataToSend);
+                    } catch (err) {
+                        console.log('Server: Error send @search_by_id_response EVENT to client with socket = ', socketID, '! Error log: ', err);
+                    }
+                }
+                if(res.length == 0){
+                    try{
+                        io.sockets.sockets[socketID].emit('search_by_id_response_null', {error: null});
+                    } catch (err) {
+                        console.log('Server: Error send @search_by_id_response_null EVENT to client with socket = ', socketID, '! Error log: ', err);
+                    }
+                }
+                else{
+                    console.log('Server: Error more than one user was found. Cancel send data to client!');
+                }
+            }
+        })
     })
 })
 

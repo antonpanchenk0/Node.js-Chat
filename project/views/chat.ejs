@@ -16,7 +16,7 @@
         <div class="chat_header">
             <div class="search_box">
                 <img src="./img/searchIcon.png" alt="SearchIcon">
-                <input type="text" name="search" id="search" placeholder="Search...">
+                <input type="text" name="search" id="search" placeholder="Поиск...">
             </div>
             <div class="user_profile_box">
                 <div class="user_avatar">
@@ -35,106 +35,7 @@
         <div class="chat_body">
             <div class="chat_list">
                 <div class="chat_list_boxes">
-                    <div class="chat_box" data-id="0">
-                        <div class="chat_icon">
-                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
-                        </div>
-                        <div class="chat_name">
-                            <h2>{ChatName}</h2>
-                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
-                        </div>
-                    </div>
                     <div class="chat_box active" data-id="1">
-                        <div class="chat_icon">
-                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
-                        </div>
-                        <div class="chat_name">
-                            <h2>{ChatName}</h2>
-                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
-                        </div>
-                    </div>
-                    <div class="chat_box" data-id="2">
-                        <div class="chat_icon">
-                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
-                        </div>
-                        <div class="chat_name">
-                            <h2>{ChatName}</h2>
-                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
-                        </div>
-                    </div>
-                    <div class="chat_box" data-id="3">
-                        <div class="chat_icon">
-                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
-                        </div>
-                        <div class="chat_name">
-                            <h2>{ChatName}</h2>
-                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
-                        </div>
-                    </div>
-                    <div class="chat_box" data-id="4">
-                        <div class="chat_icon">
-                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
-                        </div>
-                        <div class="chat_name">
-                            <h2>{ChatName}</h2>
-                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
-                        </div>
-                    </div>
-                    <div class="chat_box" data-id="5">
-                        <div class="chat_icon">
-                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
-                        </div>
-                        <div class="chat_name">
-                            <h2>{ChatName}</h2>
-                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
-                        </div>
-                    </div>
-                    <div class="chat_box" data-id="6">
-                        <div class="chat_icon">
-                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
-                        </div>
-                        <div class="chat_name">
-                            <h2>{ChatName}</h2>
-                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
-                        </div>
-                    </div>
-                    <div class="chat_box" data-id="7">
-                        <div class="chat_icon">
-                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
-                        </div>
-                        <div class="chat_name">
-                            <h2>{ChatName}</h2>
-                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
-                        </div>
-                    </div>
-                    <div class="chat_box" data-id="8">
-                        <div class="chat_icon">
-                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
-                        </div>
-                        <div class="chat_name">
-                            <h2>{ChatName}</h2>
-                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
-                        </div>
-                    </div>
-                    <div class="chat_box" data-id="9">
-                        <div class="chat_icon">
-                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
-                        </div>
-                        <div class="chat_name">
-                            <h2>{ChatName}</h2>
-                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
-                        </div>
-                    </div>
-                    <div class="chat_box" data-id="10">
-                        <div class="chat_icon">
-                            <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
-                        </div>
-                        <div class="chat_name">
-                            <h2>{ChatName}</h2>
-                            <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
-                        </div>
-                    </div>
-                    <div class="chat_box" data-id="11">
                         <div class="chat_icon">
                             <img src="./img/testIconImg.jpg" alt="{ChatIcon}">
                         </div>
@@ -172,7 +73,7 @@
                 </div>
             </div>
         </div>
-        <div class="search_result_block" style="display: none">
+        <div class="search_result_block" style="display: none" data-device="mobile">
             <input type="text" class="search_input_in_block" placeholder="Search...">
             <div class="search_result">
                 <div class="result_item">
@@ -207,6 +108,18 @@
                         <p>{UserLogin}</p>
                     </div>
                 </div>
+                <div class="result_item">
+                    <div class="user_res_avatar">
+                        <img src="./img/testIconImg.jpg" alt="{UserAvatar}">
+                    </div>
+                    <div class="user_res_nickName">
+                        <p>{UserLogin}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="search_result_block" style="display: none" data-device="desktop">
+            <div class="search_result">
                 <div class="result_item">
                     <div class="user_res_avatar">
                         <img src="./img/testIconImg.jpg" alt="{UserAvatar}">

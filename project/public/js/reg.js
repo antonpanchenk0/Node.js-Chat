@@ -22,6 +22,11 @@ setTimeout(()=>{
     }
 }, 500)
 
+//Действие на подтверждение авторизации по токену
+socket.on('success_authorization_with_token', (data)=>{
+    window.location.assign('/chat')
+})
+
 /**
  * Событие закрытия уведомления
  */
