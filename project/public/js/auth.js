@@ -66,6 +66,7 @@ socket.on('authorization_response', (data)=>{
     }
 })
 
+
 //Действие на ошибку авторизации по токену
 socket.on('error_authorization_with_token', (data)=>{
     errorMessage('Login Fail', 'Данные авторизации устарели. Введите их еще раз.');

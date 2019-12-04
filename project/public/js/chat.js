@@ -1,6 +1,19 @@
 const socket = io.connect("http://localhost:7777");
-
-console.log(socket);
+let chats = []; //Список чатов
+let openChatValue = [
+    {
+        type: 'recipient',
+        socketID: undefined,
+        nickname: undefined,
+        id: undefined
+    },
+    {
+        type: 'sender',
+        socketID: undefined,
+        nickname: undefined,
+        id: undefined
+    },
+]
 
 setTimeout(()=>{
     const Session = {
@@ -17,53 +30,13 @@ setTimeout(()=>{
         window.location.assign('/login');
     }
 }, 500)
-
-let userData = null;//Объект "Пользователь"
-
-//Действия на ответ от сервра и получение авторизационных данных
-socket.on('post_data_to_user_in_chat', (data)=>{
-    userData = data;
-    $('.user_login h2').text(data.name);
-    $('.user_login p').text(`#${data.id}`);
-    $('.user_avatar img').attr('src', data.avatar);
-    $('#preloader').fadeOut(1000);
-})
-
-//Действие клиента на ответ сервера на запрос поиска пользователей
-socket.on('search_by_id_response', (data)=>{
-    console.log('search_by_id_response', data);
-})
-
-socket.on('search_by_id_response_null', (data)=>{
-    console.log('search_by_id_response_null', data);
-})
-
-
-/**
- * Функция для создания блоков в ДОМЕ в которые будет выводится результат поиска
- * @param login - логин пользователя
- * @param avatar - аватарка пользователя
- */
-createSearchResult = (login, avatar) =>{
-
-}
-
-/**
- * Главные объект описывающий пользователя
- * @type {{settingsWindowStatus: boolean, userSettingsClass: Class || Null}}
- */
-let user = {
-    settingsWindowStatus: false,
-    userSettingsClass: null,
-}
-let chatWindow = document.querySelector('.chat_window');
-let settingsBtn = document.getElementById('user_settings');
-let exitBtn = document.getElementById('user_logout');
-let searchInput = document.getElementById('search');
-
 /**
  * Компонент "окно настроек пользователя"
  * Принимает в себя текущее имя пользователя, никнейм, почту, и аватарку
+ * @userName - имя пользователя
+ * @userNickname - никнейм пользователя
+ * @userEmail - электронная почта пользователя
+ * @userAvatar - аватарка пользователя
  */
 class Settings{
     constructor(userName, userNickName, userEmail, userAvatar){
@@ -71,7 +44,11 @@ class Settings{
         this.userNickname = userNickName;
         this.userEmail = userEmail;
         this.userAvatar = userAvatar;
+        this.setSettings = this.setSettings.bind(this);
         this.render = this.render.bind(this);
+    }
+    setSettings(e){
+        console.log(e);
     }
     render(){
         let settingsWindow = document.createElement('div');
@@ -103,8 +80,33 @@ class Settings{
                 <a href="#" class="save_settings_btn">Применить</a>
             </div>
             `;
-
         chatWindow.appendChild(settingsWindow);
+
+        let sendData = document.querySelector('a.save_settings_btn'); //Кнопка отправки данных о смене настроек "Применить"
+        sendData.addEventListener('click', function (e) {
+            e.preventDefault();
+            let data = {
+                id: userData.id,
+                socketID: socket.id,
+                name: document.querySelector('input.user_name_settings').value,
+                nickname: document.querySelector('input.user_login_settings').value,
+                email: document.querySelector('input.user_email_settings').value,
+                passwordNow: document.querySelector('input.user_password_now_settings').value,
+                passwordNew: document.querySelector('input.user_password_new_settings').value,
+                passwordConfirmNew: document.querySelector('input.user_password_confirm_new_settings').value,
+            };
+            socket.emit('change_settings', data);
+            if(user.settingsWindowStatus && closeFlag){
+                closeFlag = !closeFlag
+                setTimeout(()=>{
+                    chatWindow.removeChild(settingsWindow);
+                    closeFlag = !closeFlag;
+                    user.userSettingsClass = null;
+                }, 550);
+                user.settingsWindowStatus = false;
+                $(settingsWindow).fadeOut(500);
+            }
+        })
 
         //Флаг времени закрытия натсроек
         let closeFlag = true;
@@ -124,7 +126,7 @@ class Settings{
                         chatWindow.removeChild(settingsWindow);
                         closeFlag = !closeFlag;
                         user.userSettingsClass = null;
-                        }, 550);
+                    }, 550);
                     user.settingsWindowStatus = false;
                     $(settingsWindow).fadeOut(500);
                 }
@@ -132,6 +134,279 @@ class Settings{
         })
     }
 }
+/**
+ * Компонент "Результат поиска (Класс пользователя в поиске)"
+ * Принимает в себя текущее ид пользователя, никнейм, аватар. Device - устройство с которого выполняется поиск
+ * @u_id - id пользователя
+ * @u_nickname - nickname пользователя
+ * @u_avatar - avatar пользователя
+ * @device - устройство с которого пользователь выполняет запрос [true - desktop, false - mobile]. С помощью данной переменной выбирается блок в котором будет происходить рендер
+ * @status - статус чата, был ли добавлен этот чат в список чатов пользователя
+ */
+class SearchItem{
+    constructor(u_id, u_nickname, u_avatar, device){
+        this.u_id = u_id;
+        this.u_nickname = u_nickname;
+        this.u_avatar = u_avatar;
+        this.device = device;
+        this.status = false;
+        this.addChat = this.addChat.bind(this);
+        this.render = this.render.bind(this)
+    }
+    addChat(){
+        let chatStatus = false; //Переменная проверки существования этого чата
+        chats.forEach(element=>{
+            if(element.name == this.u_nickname){
+                chatStatus = true;
+                return chatStatus;
+            }
+        })
+        if(this.status == false && chatStatus == false) {
+            let chatBox = document.querySelector('.chat_body .chat_list .chat_list_boxes');
+            let chat_box = document.createElement('div');
+            chat_box.classList.add('chat_box');
+            chat_box.setAttribute('data-id', this.u_id);
+            chat_box.innerHTML = `
+                <div class="chat_icon">
+                    <img src="${this.u_avatar}" alt="${this.u_nickname}Avatar">
+                </div>
+                <div class="chat_name">
+                    <h2>${this.u_nickname}</h2>
+                    <p><span class="sender">{UserSender}:</span>{LastMessage}</p>
+                </div>
+            `;
+            chatBox.appendChild(chat_box);
+            //Объект чата
+            let chatObj = {
+                class: this,
+                id: this.u_id,
+                name: this.u_nickname,
+                avatar: this.u_avatar,
+                socketID: null,
+                messageGet:[],
+            };
+            chats.push(chatObj);
+            this.status = true; //Смена статуса на то, что пользователь добавлен
+            chat_box.addEventListener('click', function (e) {
+                e.preventDefault();
+                let chats = document.querySelectorAll('.chat_box');
+                chats.forEach(elem=>{elem.classList.remove('active')});
+                changeOpenChat(chatObj);
+                chat_box.classList.add('active');
+            })
+        } else{
+            return false;
+        }
+    }
+    render(){
+        let addChat = this.addChat; // для того чтобы не потерять this внутри EVENT
+        let _this = this; // для того чтобы не потерять this внутри EVENT
+        if(this.device){
+            let windowToRender = document.querySelector('div.search_result_block[data-device=desktop] div.search_result');
+            let result_item = document.createElement('div');
+            result_item.classList.add('result_item');
+            result_item.setAttribute('data-id', this.u_id)
+            result_item.innerHTML = `
+                <div class="user_res_avatar">
+                    <img src="${this.u_avatar}" alt="${this.u_nickname}Avatar">
+                </div>
+                <div class="user_res_nickName">
+                    <p>${this.u_nickname}</p>
+                </div>
+            `;
+            result_item.addEventListener('click', function (e) {
+                e.preventDefault();
+                addChat();
+                if(_this.status){
+                    $('div.search_result_block[data-device=desktop]').fadeOut(500);
+                }
+            })
+            windowToRender.appendChild(result_item);
+            $('div.search_result_block[data-device=desktop]').fadeIn(500);
+        }
+        else{
+            let windowToRender = document.querySelector('div.search_result_block[data-device=mobile] div.search_result');
+            let result_item = document.createElement('div');
+            result_item.classList.add('result_item');
+            result_item.setAttribute('data-id', this.u_id)
+            result_item.innerHTML = `
+                <div class="user_res_avatar">
+                    <img src="${this.u_avatar}" alt="${this.u_nickname}Avatar">
+                </div>
+                <div class="user_res_nickName">
+                    <p>${this.u_nickname}</p>
+                </div>
+            `;
+            result_item.addEventListener('click', function (e) {
+                e.preventDefault();
+                addChat(this);
+                if(_this.status){
+                    $('div.search_result_block[data-device=mobile]').fadeOut(500);
+                }
+                chatListStatus = false;
+            })
+            windowToRender.appendChild(result_item);
+        }
+    }
+}
+
+let userData = null;//Объект "Пользователь"
+
+//Ошибка авторизации по токену
+socket.on('get_session_error', data=>{
+    sessionStorage.clear();
+    window.location.assign('/login');
+})
+
+//Действия на ответ от сервра и получение авторизационных данных
+socket.on('post_data_to_user_in_chat', (data)=>{
+    userData = data;
+    $('.user_login h2').text(data.login);
+    $('.user_login p').text(`#${data.id}`);
+    $('.user_avatar img').attr('src', data.avatar);
+    $('#preloader').fadeOut(1000);
+    socket.emit('socket_online', {userID: data.id, socketID: socket.id, status: 1})
+})
+
+//Действие клиента на ответ сервера на запрос поиска пользователей по ID
+socket.on('search_by_id_response', (data)=>{
+    //Desktop version
+    if(document.querySelector('body').getBoundingClientRect().width > 576) {
+        if (data.status) {
+            let windowToRender = document.querySelector('div.search_result_block[data-device=desktop] div.search_result');
+            windowToRender.innerHTML = '';
+            data.data.forEach(item => {
+                new SearchItem(item.id, item.login, item.avatar, true).render();
+            })
+        } else {
+            let windowToRender = document.querySelector('div.search_result_block[data-device=desktop] div.search_result');
+            windowToRender.innerHTML = '<h2 style="font-size: 24px; color: #ffffff; font-weight: bold; margin-top: 74px; text-align: center;">Ничего не найдено :(</h2>';
+            $('div.search_result_block[data-device=desktop]').fadeIn(500);
+        }
+        searchOpenBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            $('div.search_result_block[data-device=desktop]').fadeOut(500);
+        })
+    }
+    //Mobile version
+    else{
+        if (data.status) {
+            let windowToRender = document.querySelector('div.search_result_block[data-device=mobile] div.search_result');
+            windowToRender.innerHTML = '';
+            data.data.forEach(item => {
+                new SearchItem(item.id, item.login, item.avatar, false).render();
+            })
+        } else {
+            let windowToRender = document.querySelector('div.search_result_block[data-device=mobile] div.search_result');
+            windowToRender.innerHTML = '<h2 style="font-size: 16px; color: #ffffff; font-weight: bold; margin-top: 74px; text-align: center;">Ничего не найдено :(</h2>';
+            $('div.search_result_block[data-device=mobile]').fadeIn(500);
+            searchBlockStatus = true;
+        }
+    }
+})
+
+//Действие клиента на ответ сервера на запрос поиска пользователей по Login or Name
+socket.on('search_by_login_or_name_response', (data)=>{
+    //Desktop version
+    if(document.querySelector('body').getBoundingClientRect().width > 576) {
+        if (data.status) {
+            let windowToRender = document.querySelector('div.search_result_block[data-device=desktop] div.search_result');
+            windowToRender.innerHTML = '';
+            data.data.forEach(item => {
+                new SearchItem(item.id, item.login, item.avatar, true).render();
+            })
+        } else {
+            let windowToRender = document.querySelector('div.search_result_block[data-device=desktop] div.search_result');
+            windowToRender.innerHTML = '<h2 style="font-size: 16px; color: #ffffff; font-weight: bold; margin-top: 74px; text-align: center;">Ничего не найдено :(</h2>';
+            $('div.search_result_block[data-device=desktop]').fadeIn(500);
+        }
+        searchOpenBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            $('div.search_result_block[data-device=desktop]').fadeOut(500);
+        })
+    }
+    //Mobile version
+    else{
+        if (data.status) {
+            let windowToRender = document.querySelector('div.search_result_block[data-device=mobile] div.search_result');
+            windowToRender.innerHTML = '';
+            data.data.forEach(item => {
+                new SearchItem(item.id, item.login, item.avatar, false).render();
+            })
+        } else {
+            let windowToRender = document.querySelector('div.search_result_block[data-device=mobile] div.search_result');
+            windowToRender.innerHTML = '<h2 style="font-size: 16px; color: #ffffff; font-weight: bold; margin-top: 74px; text-align: center;">Ничего не найдено :(</h2>';
+            $('div.search_result_block[data-device=mobile]').fadeIn(500);
+            searchBlockStatus = true;
+        }
+    }
+})
+
+//Получение сообщения с сервера
+socket.on('get_message', data=>{
+    const {message, senderID, senderAvatar, senderNickname} = data;
+    if(openChatValue[0].id == senderID){
+        createMessage('sent_message_for_me', {avatar: senderAvatar, id:senderID, nickname: senderNickname}, message)
+    } else {
+        chats.forEach(elem => {
+            if (elem.id == senderID) {
+                elem.messageGet.push({type: 'get', message:message});
+                console.log(chats);
+                return true;
+            }
+        })
+        if(document.querySelector('body').getBoundingClientRect().width > 576){
+            new SearchItem(senderID, senderNickname, senderAvatar, true).addChat();
+            chats.forEach(elem => {
+                if (elem.id == senderID) {
+                    elem.messageGet.push({type: 'get', message:message});
+                    console.log(chats);
+                    return true;
+                }
+            })
+        }
+        else{
+            new SearchItem(senderID, senderNickname, senderAvatar, false).addChat()
+        }
+    }
+})
+/**
+ * Главные объект описывающий окна пользователя
+ * @type {{settingsWindowStatus: boolean, userSettingsClass: Class || Null}}
+ */
+let user = {
+    settingsWindowStatus: false,
+    userSettingsClass: null,
+}
+let chatWindow = document.querySelector('.chat_window');
+let settingsBtn = document.getElementById('user_settings');
+let exitBtn = document.getElementById('user_logout');
+let searchInput = document.getElementById('search'); //desktop
+let searchInputMobile = document.querySelector('.search_input_in_block'); //mobile
+let sendMsgBtn = document.getElementById('send_message_btn');
+
+sendMsgBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    let messageInput = document.querySelector('textarea#message');
+    let data = {
+        message: messageInput.value,
+        recipientID: openChatValue[0].id,
+        recipientName: openChatValue[0].nickname,
+        senderSocketID: socket.id,
+        senderID: userData.id
+    }
+    socket.emit('post_msg', data);
+    chats.forEach(elem => {
+        if (elem.id == openChatValue[0].id) {
+            elem.messageGet.push({type: 'post', message: messageInput.value});
+            console.log(chats);
+            return true;
+        }
+    })
+
+    createMessage('sent_message_from_me', {avatar: userData.avatar, id: userData.id, nickname: userData.name}, messageInput.value);
+    messageInput.value = '';
+})
 
 //Собитые открытия окна настроек
 settingsBtn.addEventListener('click', function (e) {
@@ -176,8 +451,24 @@ searchInput.addEventListener('keydown', function (e) {
         enterData.split('');
         if(enterData[0] == '#'){
             socket.emit('go_search_by_userID', {searchValue: searchInput.value, socketID: socket.id});
+            searchInput.value = '';
         } else{
-            socket.emit('go_search_by_login', {searchValue: searchInput.value, socketID: socket.id});
+            socket.emit('go_search_by_login_or_name', {searchValue: searchInput.value, socketID: socket.id});
+            searchInput.value = '';
+        }
+    }
+})
+//Событие нажатия кнопки @Ввод при вводе в меню поиска (поиск по ID либо логину) на мобильных устрйствах
+searchInputMobile.addEventListener('keydown', function (e) {
+    if(e.keyCode == 13){
+        let enterData = searchInputMobile.value;
+        enterData.split('');
+        if(enterData[0] == '#'){
+            socket.emit('go_search_by_userID', {searchValue: searchInputMobile.value, socketID: socket.id});
+            searchInputMobile.value = '';
+        } else{
+            socket.emit('go_search_by_login_or_name', {searchValue: searchInputMobile.value, socketID: socket.id});
+            searchInputMobile.value = '';
         }
     }
 })
@@ -284,3 +575,54 @@ searchOpenBtn.addEventListener('click', function (e) {
         }
     }
 })
+/**
+ * Функция смены активного чата
+ * @chatData type: obj объект который описывает пользователя либо чат который должен будет открытся
+ */
+changeOpenChat = (chatData) =>{
+    document.querySelector('.select_chat_window .chat_message_box .messages').innerHTML = ''
+    openChatValue[0].nickname = chatData.name;
+    openChatValue[0].socketID = chatData.socketID;
+    openChatValue[0].id = chatData.id;
+    openChatValue[1].socketID = socket.id;
+    openChatValue[1].nickname = userData.name;
+    openChatValue[1].id = userData.id;
+    chats.forEach(item=>{
+        if(item.id == openChatValue[0].id){
+            if(item.messageGet.length != 0){
+                item.messageGet.forEach(elem=>{
+                    if(elem.type == 'get')
+                        createMessage('sent_message_for_me', {avatar: chatData.avatar, id: chatData.id, nickname: chatData.name}, elem.message);
+                    else if(elem.type == 'post')
+                        createMessage('sent_message_from_me', {avatar: chatData.avatar, id: chatData.id, nickname: chatData.name}, elem.message);
+                })
+            }
+        }
+    })
+    $('.write_message_box').fadeIn(250);
+}
+
+/**
+ * Функция создания сообщей (DOM элементов)
+ * @messageType type: string - Класс для блока сообщения, определяет сообщение получено от кого-то или же отправленное
+ * @user type: obj - объект описывающий пользователя, который отправил сообщение
+ * @message type: string - сообщение полученнное или отправленное пользователем
+ */
+createMessage = (messageType, user, message) =>{
+    const {avatar, id, nickname} = user;
+    let messages = document.querySelector('.select_chat_window .chat_message_box .messages');
+    let sent_message = document.createElement('div');
+    sent_message.classList.add('sent_message');
+    sent_message.classList.add(messageType);
+    sent_message.innerHTML =
+        `
+            <div class="avatar_sender" data-id="${id}" data-name="${nickname}">
+                <a href="#"><img src="${avatar}" alt="${nickname}Avatar"></a>
+            </div>
+        `;
+    let p = document.createElement('p');
+    p.classList.add('messageValue');
+    p.innerHTML = message;
+    sent_message.appendChild(p);
+    messages.appendChild(sent_message);
+}

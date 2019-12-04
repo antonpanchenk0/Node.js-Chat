@@ -228,16 +228,21 @@ io.on('connection', (socket)=>{
     socket.on('go_search_by_userID', (data)=>{
         const {searchValue,socketID} = data;
         let id = searchValue.split('#');
-        const sqlGetUserByID = `SELECT * FROM users WHERE id = '${id[1]}';`
+        const sqlGetUserByID = `SELECT * FROM users WHERE id = '${id[1]}';`;
         const connection = mysql.createConnection(dataBaseSettigns);
         connection.query(sqlGetUserByID, (err, res)=>{
             if(err) console.log('Server: Error get user with id = ', searchValue, ' - ', id, 'in DataBase. ErrorLog: ', err);
             else{
                 if(res.length == 1){
                     let dataToSend = {
-                        id: res[0].id,
-                        login: res[0].login,
-                        avatar: res[0].avatar
+                        status: true,
+                        data: [
+                            {
+                                id: res[0].id,
+                                login: res[0].login,
+                                avatar: res[0].avatar
+                            }
+                        ]
                     }
                     try{
                         io.sockets.sockets[socketID].emit('search_by_id_response', dataToSend);
@@ -245,15 +250,139 @@ io.on('connection', (socket)=>{
                         console.log('Server: Error send @search_by_id_response EVENT to client with socket = ', socketID, '! Error log: ', err);
                     }
                 }
-                if(res.length == 0){
+                else if(res.length == 0){
                     try{
-                        io.sockets.sockets[socketID].emit('search_by_id_response_null', {error: null});
+                        io.sockets.sockets[socketID].emit('search_by_id_response', {status: false, data: null});
                     } catch (err) {
-                        console.log('Server: Error send @search_by_id_response_null EVENT to client with socket = ', socketID, '! Error log: ', err);
+                        console.log('Server: Error send @search_by_id_response EVENT to client with socket = ', socketID, '!! Error log: ', err);
                     }
                 }
                 else{
-                    console.log('Server: Error more than one user was found. Cancel send data to client!');
+                    console.log('Server: Error more than one user was found. Cancel send data to client!', res);
+                }
+            }
+        })
+    })
+
+    //Ответ сервера на запрос поиска пользователей по login или name
+    socket.on('go_search_by_login_or_name', data=>{
+        const {searchValue,socketID} = data;
+        const sqlGetUserByLogin = `SELECT * FROM users WHERE login = '${searchValue}' OR name = '${searchValue}';`;
+        const connection = mysql.createConnection(dataBaseSettigns);
+        connection.query(sqlGetUserByLogin, (err,res)=>{
+            if(err) console.log('Server: Error get with login or name = ', searchValue, '. ErrorLog: ', err);
+            else{
+                if(res.length > 0){
+                    let data = [];
+                    res.forEach(elem=>{
+                        data.push({id: elem.id, login: elem.login, avatar: elem.avatar})
+                    })
+                    let dataToSend = {
+                        status: true,
+                        data: data
+                    }
+                    try{
+                        io.sockets.sockets[socketID].emit('search_by_login_or_name_response', dataToSend);
+                    } catch (err) {
+                        console.log('Server: Error send @search_by_login_or_name_response EVENT to client with socket = ', socketID, '! Error log: ', err);
+                    }
+                }
+                else if(res.length == 0){
+                    try{
+                        io.sockets.sockets[socketID].emit('search_by_login_or_name_response', {status: false, data: null});
+                    } catch (err) {
+                        console.log('Server: Error send @search_by_login_or_name_response EVENT to client with socket = ', socketID, '!! Error log: ', err);
+                    }
+                }
+                else{
+                    console.log('Server: Search error. Cancel send data to client!', res);
+                }
+            }
+        })
+    })
+
+    //Запись пользователя (что он онлайн)
+    socket.on('socket_online', data=>{
+        const connection = mysql.createConnection(dataBaseSettigns);
+        const sqlSearchUser = `SELECT * FROM active_users WHERE user_id = '${data.userID}';`;
+        connection.query(sqlSearchUser, (err,res)=>{
+            if(err) console.log('Server: Error get user from active_users table where user_id = ', data.userID, '. ErrorLog: ', err);
+            else{
+                if(res.length == 1){
+                    const sqlUpdateStatus = `UPDATE active_users SET user_socket_id = '${data.socketID}', status = '${data.status}' WHERE user_id = '${data.userID}';`
+                    connection.query(sqlUpdateStatus, (err,res)=>{
+                        if(err) console.log('Server: Error update user status with user_id = ', data.userID, '. ErrorLog: ', err);
+                        else{
+                            console.log('Server: Success update user status with user_id = ', data.userID, '. Result: ', res)
+                        }
+                    })
+                }
+                else if(res.length == 0){
+                    let inputData = [data.userID, data.socketID, data.status]
+                    const sqlWriteStatus = `INSERT INTO active_users(user_id, user_socket_id, status) VALUES (?,?,?);`;
+                    connection.query(sqlWriteStatus, inputData, (err,res)=>{
+                        if(err) console.log('Server: Error insert user status with user_id = ', data.userID, '. ErrorLog: ', err);
+                        else{
+                            console.log('Server: Success insert user status with user_id = ', data.userID, '. Result: ', res)
+                        }
+                    })
+                }
+            }
+        })
+    })
+
+    //Обработка disconnect socket
+    socket.on('disconnect', data=>{
+        const connection = mysql.createConnection(dataBaseSettigns);
+        const sql = `UPDATE active_users SET status = '0' WHERE user_socket_id = '${socket.id}';`;
+        connection.query(sql, (err,res)=>{
+            if(err) console.log('Server: Error update user status with user_socket_id = ', socket.id, '. ErrorLog: ', err);
+            else{
+                console.log('Server: Success update user status with user_socket_id = ', socket.id, '. Result: ', res)
+            }
+        })
+    })
+
+    //Обработка отправленных сообщений
+    socket.on('post_msg', data=>{
+        const {message, recipientID, recipientName, senderSocketID, senderID} = data;
+        const connection = mysql.createConnection(dataBaseSettigns);
+        let getSender = null;
+        const sqlGetSender = `SELECT * FROM users WHERE id = '${senderID}';`;
+        connection.query(sqlGetSender, (err,res)=>{
+            if(err) console.log('Server: Error get senderData with id = ', senderID, '. ErrorLog: ', err);
+            else{
+                getSender = res;
+                console.log('Server: Success get senderData with id = ', senderID, '. Result: ', res);
+            }
+        })
+        const sql = `SELECT * FROM active_users WHERE user_id = '${recipientID}';`;
+        connection.query(sql, (err, res)=>{
+            if(err) console.log('Server: Error get recipient with user_id = ', recipientID, '. ErrorLog: ', err);
+            else{
+                if(res.length == 0){
+                    //Если пользователь зарегистрирован но ни разу не был онлайн. Реализации в данных момент нет.
+                    console.log('Server: Send message to offline people. No realize now. Result: ', res);
+                }
+                else if(res.length == 1){
+                    let recipitentSocketID = res[0].user_socket_id;
+                    let _data = {
+                        message: message,
+                        senderID: senderID,
+                        senderAvatar: getSender[0].avatar,
+                        senderNickname: getSender[0].login,
+                    }
+                    if(getSender != null){
+                        try{
+                            io.sockets.sockets[recipitentSocketID].emit('get_message', _data);
+                        } catch (error) {
+                            console.log('Server: Error send message to socket with id = ', recipitentSocketID, '. Error: ', error);
+                        }
+                    }
+                }
+                else{
+                    //Если найдено более одного юзера(не возможно)
+                    console.log('Server: Error more than one user was found. Message not send! Result: ', res);
                 }
             }
         })
