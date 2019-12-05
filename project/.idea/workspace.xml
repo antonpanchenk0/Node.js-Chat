@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2fb0b7f1-4092-4114-9ab0-0a821d3fe287" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Front-Chat-Template/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-Chat-Template/css/common.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-Chat-Template/registration.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-Chat-Template/registration.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/chat.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/chat.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/chat.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/chat.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/chat.ejs" afterDir="false" />
-    </list>
+    <list default="true" id="2fb0b7f1-4092-4114-9ab0-0a821d3fe287" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -21,17 +13,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="347" column="85" selection-start-line="347" selection-start-column="85" selection-end-line="347" selection-end-column="85" />
+            <state relative-caret-position="489">
+              <caret line="410" column="32" lean-forward="true" selection-start-line="410" selection-start-column="32" selection-end-line="410" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/chat.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="289">
@@ -42,6 +34,15 @@
                 <element signature="n#style#0;n#h2#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#h2#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/reg.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1469">
+              <caret line="27" column="2" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="2" />
             </state>
           </provider>
         </entry>
@@ -109,7 +110,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -126,12 +126,19 @@
               <item name="project" type="b2602c69:ProjectViewProjectNode" />
               <item name="project" type="462c0819:PsiDirectoryNode" />
               <item name="public" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project" type="462c0819:PsiDirectoryNode" />
+              <item name="public" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -194,11 +201,12 @@
       <workItem from="1575220283544" duration="4054000" />
       <workItem from="1575322935062" duration="3560000" />
       <workItem from="1575452712183" duration="32283000" />
+      <workItem from="1575543476891" duration="1953000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="97214000" />
+    <option name="totallyTimeSpent" value="99167000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -270,13 +278,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/reg.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="27" column="2" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/auth.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="303">
@@ -308,13 +309,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="347" column="85" selection-start-line="347" selection-start-column="85" selection-end-line="347" selection-end-column="85" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/chat.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -325,6 +319,20 @@
             <element signature="n#style#0;n#h2#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h2#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/reg.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1469">
+          <caret line="27" column="2" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="489">
+          <caret line="410" column="32" lean-forward="true" selection-start-line="410" selection-start-column="32" selection-end-line="410" selection-end-column="32" />
         </state>
       </provider>
     </entry>
